@@ -1,0 +1,121 @@
+package qyServer0;
+
+
+import java.util.*;
+
+public class usersService {
+	private usersOp uo = new usersOp();
+	public int addUser(users user, JDBCKonnekt jk)
+	{
+		int state = -1;
+		try{
+            if(uo.checkUserViaID(user.getusername(), jk))
+            {
+            	/*
+            	if(uo.checkUserViaEmail(user.getemail(), jk))
+            	{
+            		uo.addUser(user, jk);
+            		state = 1;
+            	}
+            	else
+            	{
+            		state = 2;
+            	}
+            	*/
+            	state = 3;
+            }
+            else
+            {
+            	if(uo.checkUserViaEmail(user.getemail(), jk))
+            	{
+            		state = 2;
+            	}
+            	else
+            	{
+            		uo.addUser(user, jk);
+            		state = 1;
+            	}
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+		return state;
+	}
+	public List<users> getUsers(JDBCKonnekt c) {
+    	List<users> list = null;
+        try{
+            list = uo.getUsers(c);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+	}
+	public int modifyPassword(String username,String password,JDBCKonnekt c)
+    {
+    	int ans=-1;
+    	try {
+    		ans = uo.modifyUser(username, password, c);
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return ans;
+    }
+	public int verifyUser(String username,String crypsw,JDBCKonnekt jk)
+	{
+		int state = -1;
+		if(uo.checkUserViaID(username, jk))
+		{
+			List<users> uList=uo.getUserViaID(username, jk);
+			users user = uList.stream().findFirst().orElse(null);
+			System.out.println(user.getpassword());
+			if(user.getpassword().equals(crypsw))
+			{
+				state = 1;
+			}
+			else
+			{
+				state = 2;
+			}
+		}
+		else
+		{
+			state = 0;
+		}
+		return state;
+	}
+	public int verifyUser2(String username,String email,JDBCKonnekt jk)
+	{
+		int state =-1;
+		if(uo.checkUserViaID(username, jk))
+		{
+			List<users> uList=uo.getUserViaID(username, jk);
+			users user = uList.stream().findFirst().orElse(null);
+			System.out.println(user.getpassword());
+			if(user.getemail().equals(email))
+			{
+				state = 1;
+			}
+			else
+			{
+				state = 0;
+			}
+		}
+		else
+		{
+			state = 0;
+		}
+		return state;
+	}
+	public int forgetPassword(String username,String email,String password,JDBCKonnekt jk)
+	{
+		int state = -1;
+		int ifVerified = verifyUser2(username,email,jk);
+		if(ifVerified)
+		{
+			uo.modifyUser(username, password, jk);
+			state = 1;
+		}
+		return state;
+	}
+}

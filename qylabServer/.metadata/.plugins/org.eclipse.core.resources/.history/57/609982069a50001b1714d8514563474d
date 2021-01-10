@@ -1,0 +1,5 @@
+package qyServer0;
+
+public class ResetPasswordServlet {
+
+}

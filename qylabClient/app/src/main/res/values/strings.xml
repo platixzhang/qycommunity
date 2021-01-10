@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">轻音社区 Qingyin Community</string>
+    <string name="error_no_net">Can\'t get the database. Please check your network.</string>
+    <string name="error_empty_email">Email should not be empty!</string>
+    <string name="error_empty_username">Username should not be empty!</string>
+    <string name="error_diff_password">Please check your passwords for they are not identical.</string>
+    <string name="error_used_email">The Email address is already used.</string>
+    <string name="error_used_username">The username already exists.</string>
+    <string name="error_default">A error happened but we don\'t know it really.</string>
+    <string name="reset_ok">Your Password have been reset.</string>
+</resources>
